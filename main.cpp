@@ -4,6 +4,7 @@
 #include <queue>
 #include <limits>
 #include <iomanip>
+#include <cstdlib>
 using namespace std;
 
 struct Pais
@@ -241,17 +242,26 @@ void dijkstra(Grafo &g, int origem, int destino, int criterio){ //Feito com auxi
 
     reverse(caminho.begin(), caminho.end());
 
-    double custo = brasilPortugal.preco;
-    double distancia = brasilPortugal.distancia;
-    double tempo = brasilPortugal.tempo;
+    double custo = 0;
+    double distancia = 0;
+    double tempo = 0;
 
+    if (origem == 0) {
+    custo = brasilPortugal.preco;
+    distancia = brasilPortugal.distancia;
+    tempo = brasilPortugal.tempo;
+    }
     cout << "\n Menor caminho por ";
 
     if (criterio == 0) cout << "CUSTO";
     else if (criterio == 1) cout << "DISTANCIA";
     else cout << "TEMPO";
 
-    cout << ":\nBrasil -> ";
+    cout << ":\n";
+
+    if (origem == 0) {
+    cout << "Brasil -> ";
+    }
 
     for (int i = 0; i < caminho.size(); i++) {
         cout << g.paises[caminho[i]].nome;
