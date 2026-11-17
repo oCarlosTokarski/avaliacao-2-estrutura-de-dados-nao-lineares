@@ -32,6 +32,13 @@ struct Grafo {
     vector<vector<Aresta>> adj;
 };
 
+struct TrechoInicial {
+    double distancia;
+    double tempo;
+    double preco;
+    const char* transporte;
+};
+
 
 int main(int argc, char const *argv[])
 {
