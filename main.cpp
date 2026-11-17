@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <queue>
 using namespace std;
 
 struct Pais
@@ -144,6 +145,13 @@ void mostrarGrafo(Grafo &g) {
     }
 };
 
+double peso(Aresta a, int criterio){
+    if (criterio == 0) return a.preco;
+    if (criterio == 1) return a.distancia;
+    else return a.tempo;
+};
+
+
 
 int main(int argc, char const *argv[])
 {
@@ -152,7 +160,7 @@ int main(int argc, char const *argv[])
 
     cadastrarPaises(europa);
     cadastrarConexoes(europa);
-    mostrarGrafo(europa);
+    
 
     return 0;
 }
