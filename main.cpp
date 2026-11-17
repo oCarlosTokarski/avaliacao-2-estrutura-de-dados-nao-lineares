@@ -359,12 +359,127 @@ int main(int argc, char const *argv[])
 
     cadastrarPaises(europa);
     cadastrarConexoes(europa);
-   // dijkstra(europa, 0, 4, 0);//
-   // dijkstra(europa, 0, 4, 1);//
-   // dijkstra(europa, 0, 4, 2);//
-   // mostrarCaminhos(europa);//
-    prim(europa);
-    //mostrarCaminhos(europa);//
+
+    int opcao;
+    int c;
+    int criterio;
+    char const * t;
+
+    do {
+        cout << "------------------ Menu -----------------\n";
+        cout << "1- Mostrar o Grafo original\n";
+        cout << "2- Mostrar as matrizes\n";
+        cout << "3- Mostrar matriz especifica\n";
+        cout << "4- Mostrar caminhos minimos\n";
+        cout << "5- Caminhos minimos por criterio\n";
+        cout << "6- Mostrar a arvore generadora minima\n";
+        cout << "0- Sair\n";
+        cout << "Escolha uma opcao: ";
+        cin >> opcao;
+     switch (opcao){
+    case 1:
+        mostrarGrafo(europa);
+        break;
+    case 2:
+        mostrarMatrizes(europa);
+        break;
+    case 3:
+        cout << " " << endl;
+        cout << "Escolha um criterio:\n";
+        cout << "1-Preco\n";
+        cout << "2-Distancia\n";
+        cout << "3-Tempo\n";
+        cout << "Digite a opcao selecionada: ";
+        cin >> c;
+        if (c == 1){
+            criterio = 0;
+            t = "PRECO";
+        } else if (c == 2) {
+            criterio = 1;
+            t = "DISTANCIA";
+        } else if (c == 3){
+            criterio = 2;
+            t = "TEMPO";
+        }else{
+            cout << "Criterio invalido\n";
+            break;
+        };
+        mostrarMatriz(europa, criterio, t);
+        break;
+    
+    case 4:
+        mostrarCaminhos(europa);
+        break;
+    
+    case 5: {
+
+        cout << "\nPaises disponiveis:\n";
+        cout << "0 - Portugal\n";
+        cout << "1 - Espanha\n";
+        cout << "2 - Franca\n";
+        cout << "3 - Alemanha\n";
+        cout << "4 - Dinamarca\n";
+        cout << "5 - Polonia\n";
+        cout << "6 - Grecia\n";
+        cout << "7 - Italia\n";
+        
+        int origem, destino;
+        
+        cout << "\nDigite o numero do pais de origem: ";
+        cin >> origem;
+        
+        cout << "Digite o numero do pais de destino: ";
+        cin >> destino;
+        
+        if (origem < 0 || origem > 7 || destino < 0 || destino > 7) {
+            cout << "\nPais invalido!\n";
+            break;
+        }
+        
+        if (origem == destino) {
+            cout << "\nA origem e o destino devem ser diferentes!\n";
+            break;
+        }
+        
+        cout << "\nEscolha o criterio:\n";
+        cout << "1 - Menor preco\n";
+        cout << "2 - Menor distancia\n";
+        cout << "3 - Menor tempo\n";
+        cout << "Digite a opcao selecionada: ";
+        cin >> c;
+        
+        if (c >= 1 && c <= 3) {
+            dijkstra(europa, origem, destino, c - 1);
+        }
+        else {
+            cout << "\nCriterio invalido!\n";
+        }
+    }
+        
+    break;
+
+    case 6:
+        prim(europa);
+        break;
+
+    case 0:
+        cout << "\nEncerrando programa\n";
+        break;          
+    default:
+        cout << "Opcao invalida!\n";
+        break;
+    }
+
+    if (opcao != 0) { // Trecho para apagar terminal feito com ia
+        cout << "\nPressione ENTER para continuar...";
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin.get();
+
+        system("cls");
+    };
+    } while (opcao != 0);
+
+
     
     return 0;
 }
