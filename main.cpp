@@ -196,6 +196,103 @@ void mostrarMatrizes(Grafo &g) {
 };
 
 
+void dijkstra(Grafo &g, int origem, int destino, int criterio){ //Feito com auxilio do material do professor e de ia
+    int n = g.paises.size();
+    double INF = numeric_limits<double>::infinity();
+
+    vector<double> dist(n, INF);
+    vector<int> pai(n, -1);
+
+
+    priority_queue<pair<double, int>,
+        vector<pair<double, int>>,
+        greater<pair<double, int>>> fila;
+
+    dist[origem] = 0;
+    fila.push({0, origem});
+
+    while (!fila.empty()) {
+        int atual = fila.top().second;
+        double distanciaAtual = fila.top().first;
+        fila.pop();
+
+        if (distanciaAtual > dist[atual]) continue;
+
+        for (Aresta a : g.adj[atual]) {
+            double novaDist = dist[atual] + peso(a, criterio);
+
+            if (novaDist < dist[a.destino]) {
+                dist[a.destino] = novaDist;
+                pai[a.destino] = atual;
+                fila.push({novaDist, a.destino});
+            }
+        }
+    }
+
+    if (dist[destino] == INF) {
+        cout << "\nDestino inacessivel!\n";
+        return;
+    }
+    
+    vector<int> caminho;
+
+    for (int v = destino; v != -1; v = pai[v])
+        caminho.push_back(v);
+
+    reverse(caminho.begin(), caminho.end());
+
+    double custo = brasilPortugal.preco;
+    double distancia = brasilPortugal.distancia;
+    double tempo = brasilPortugal.tempo;
+
+    cout << "\n Menor caminho por ";
+
+    if (criterio == 0) cout << "CUSTO";
+    else if (criterio == 1) cout << "DISTANCIA";
+    else cout << "TEMPO";
+
+    cout << ":\nBrasil -> ";
+
+    for (int i = 0; i < caminho.size(); i++) {
+        cout << g.paises[caminho[i]].nome;
+
+        if (i < caminho.size() - 1) {
+            int prox = caminho[i + 1];
+
+            for (Aresta a : g.adj[caminho[i]]) {
+                if (a.destino == prox) {
+                    custo += a.preco;
+                    distancia += a.distancia;
+                    tempo += a.tempo;
+                    break;
+                }
+            }
+
+            cout << " -> ";
+        }
+    }
+
+    if (criterio == 0) {
+        cout << "\nCusto total: R$ " << custo;
+    } else if (criterio == 1) {
+        cout << "\nDistancia total: " << distancia << " km";
+    }else if (criterio == 2){
+        cout << "\nTempo total: " << tempo << " horas\n";
+    }else{
+        cout << "Criterio invalido" << endl;
+    };
+};
+
+void mostrarCaminhos(Grafo &g) {
+    cout << "----------- Caminho minimo -------------" << endl;
+
+    dijkstra(g, 0, 7, 0);
+    dijkstra(g, 0, 7, 1);
+    dijkstra(g, 0, 7, 2);
+
+};
+
+
 int main(int argc, char const *argv[])
 {
 
@@ -203,8 +300,11 @@ int main(int argc, char const *argv[])
 
     cadastrarPaises(europa);
     cadastrarConexoes(europa);
-    mostrarMatriz(europa, 0, "Custo");
-    mostrarMatrizes(europa);
-
+    dijkstra(europa, 0, 4, 0);
+    dijkstra(europa, 0, 4, 1);
+    dijkstra(europa, 0, 4, 2);
+    mostrarCaminhos(europa);
+    //mostrarCaminhos(europa);//
+    
     return 0;
 }
