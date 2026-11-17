@@ -110,8 +110,49 @@ void cadastrarConexoes(Grafo &g) { //Pedimos ajuda para o chat sobre o conceito 
     adicionarAresta(g, 6, 7, 1086, 2.00, 500, "Aviao");
 };
 
+
+void mostrarGrafo(Grafo &g) {
+    cout << "---------------- Grafo Original ------------------\n";
+    cout << "\nBrasil -> Portugal";
+    cout << "\nDistancia: " << brasilPortugal.distancia << " km";
+    cout << "\nTempo: " << brasilPortugal.tempo << " horas";
+    cout << "\nPreco: R$ " << brasilPortugal.preco;
+    cout << "\nTransporte: " << brasilPortugal.transporte << "\n";
+
+
+    for(int i  = 0; i < g.paises.size(); i++) {
+        cout << "\n -----------------------------------\n";
+
+        cout << g.paises[i].nome;
+        cout << "\nPonto Turistico: " << g.paises[i].pontoTuristico;
+
+        cout << "\nConexoes:\n";
+
+         for (Aresta a : g.adj[i]) { //Trecho feito por ia
+
+            cout << " -> " << g.paises[a.destino].nome;
+
+            cout << " | " << a.distancia << " km";
+
+            cout << " | " << a.tempo << " h";
+
+            cout << " | R$ " << a.preco;
+
+            cout << " | " << a.transporte << endl;
+         }
+
+    }
+};
+
+
 int main(int argc, char const *argv[])
 {
+
+    Grafo europa;
+
+    cadastrarPaises(europa);
+    cadastrarConexoes(europa);
+    mostrarGrafo(europa);
 
     return 0;
 }
