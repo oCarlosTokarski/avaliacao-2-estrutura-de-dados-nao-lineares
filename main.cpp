@@ -292,6 +292,65 @@ void mostrarCaminhos(Grafo &g) {
 
 };
 
+void prim(Grafo &g) { //Uso de IA  estruturar a prim com base no nosso codigo
+    int n = g.paises.size();
+    double INF = numeric_limits<double>::infinity();
+
+    vector<double> chave(n, INF);
+    vector<int> pai(n, -1);
+    vector<bool> visitado(n, false);
+
+    chave[0] = 0;
+
+    double custo = 0, distancia = 0, tempo = 0;
+
+    cout << "\n========== ARVORE GERADORA MINIMA ==========\n";
+    cout << "Criterio: menor custo\n";
+
+    for (int i = 0; i < n; i++) {
+        int u = -1;
+
+        for (int j = 0; j < n; j++)
+            if (!visitado[j] && (u == -1 || chave[j] < chave[u]))
+                u = j;
+
+        if (u == -1 || chave[u] == INF) {
+            cout << "Grafo desconexo!\n";
+            return;
+        }
+
+        visitado[u] = true;
+
+        if (pai[u] != -1) {
+            for (Aresta a : g.adj[pai[u]]) {
+                if (a.destino == u) {
+                    cout << g.paises[pai[u]].nome
+                         << " -> " << g.paises[u].nome
+                         << " | R$ " << a.preco
+                         << " | " << a.distancia << " km"
+                         << " | " << a.tempo << " h\n";
+
+                    custo += a.preco;
+                    distancia += a.distancia;
+                    tempo += a.tempo;
+                    break;
+                }
+            }
+        }
+
+        for (Aresta a : g.adj[u]) {
+            if (!visitado[a.destino] && a.preco < chave[a.destino]) {
+                chave[a.destino] = a.preco;
+                pai[a.destino] = u;
+            }
+        }
+    }
+
+    cout << "\nCusto total da AGM: R$ " << custo;
+    cout << "\nDistancia total: " << distancia << " km";
+    cout << "\nTempo total: " << tempo << " horas\n";
+}
+
 
 int main(int argc, char const *argv[])
 {
@@ -300,10 +359,11 @@ int main(int argc, char const *argv[])
 
     cadastrarPaises(europa);
     cadastrarConexoes(europa);
-    dijkstra(europa, 0, 4, 0);
-    dijkstra(europa, 0, 4, 1);
-    dijkstra(europa, 0, 4, 2);
-    mostrarCaminhos(europa);
+   // dijkstra(europa, 0, 4, 0);//
+   // dijkstra(europa, 0, 4, 1);//
+   // dijkstra(europa, 0, 4, 2);//
+   // mostrarCaminhos(europa);//
+    prim(europa);
     //mostrarCaminhos(europa);//
     
     return 0;
