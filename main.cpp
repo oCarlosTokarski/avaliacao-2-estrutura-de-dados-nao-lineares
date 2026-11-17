@@ -2,6 +2,8 @@
 #include <vector>
 #include <algorithm>
 #include <queue>
+#include <limits>
+#include <iomanip>
 using namespace std;
 
 struct Pais
@@ -58,7 +60,7 @@ void cadastrarPaises(Grafo &g) {
         {"Italia", "Coliseu"}
     };
 
-    g.adj.resize(8);
+    g.adj.resize(g.paises.size());
 };
 
 void adicionarAresta(  //Trecho feito com auxilio de IA
@@ -151,6 +153,47 @@ double peso(Aresta a, int criterio){
     else return a.tempo;
 };
 
+//Matrizes feita com o auxilio de ia (não consegui achar um exemplo do professor com codigo de matrizes de custo)
+
+void mostrarMatriz(Grafo &g, int criterio, const char* titulo) {
+    int n = g.paises.size();
+    double INF = numeric_limits<double>::infinity();
+
+    vector<vector<double>> matriz(n, vector<double>(n, INF));
+
+    for (int i = 0; i < n; i++) {
+        matriz[i][i] = 0;
+
+        for (Aresta a : g.adj[i])
+            matriz[i][a.destino] = peso(a, criterio);
+    }
+
+    cout << "\n-------- MATRIZ DE " << titulo << " -------\n";
+
+    cout << setw(12) << " ";
+    for (Pais p : g.paises)
+        cout << setw(12) << p.nome;
+
+    cout << "\n";
+
+    for (int i = 0; i < n; i++) {
+        cout << setw(12) << g.paises[i].nome;
+
+        for (int j = 0; j < n; j++) {
+            if (matriz[i][j] == INF)
+                cout << setw(12) << "-";
+            else
+                cout << setw(12) << matriz[i][j];
+        }
+        cout << "\n";
+    }
+}
+
+void mostrarMatrizes(Grafo &g) {
+    mostrarMatriz(g, 0, "CUSTOS (R$)");
+    mostrarMatriz(g, 1, "DISTANCIAS (KM)");
+    mostrarMatriz(g, 2, "TEMPOS (HORAS)");
+};
 
 
 int main(int argc, char const *argv[])
@@ -160,7 +203,8 @@ int main(int argc, char const *argv[])
 
     cadastrarPaises(europa);
     cadastrarConexoes(europa);
-    
+    mostrarMatriz(europa, 0, "Custo");
+    mostrarMatrizes(europa);
 
     return 0;
 }
