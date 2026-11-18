@@ -381,7 +381,7 @@ int main(int argc, char const *argv[])
         cout << "3- Mostrar matriz especifica\n";
         cout << "4- Mostrar caminhos minimos\n";
         cout << "5- Caminhos minimos por criterio\n";
-        cout << "6- Mostrar a arvore generadora minima\n";
+        cout << "6- Mostrar a arvore geradora minima\n";
         cout << "0- Sair\n";
         cout << "Escolha uma opcao: ";
         cin >> opcao;
