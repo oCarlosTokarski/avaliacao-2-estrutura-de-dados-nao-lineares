@@ -372,7 +372,6 @@ int main(int argc, char const *argv[])
 
     int opcao;
     int c;
-    int criterio;
     char const * t;
 
     do {
@@ -402,19 +401,19 @@ int main(int argc, char const *argv[])
         cout << "Digite a opcao selecionada: ";
         cin >> c;
         if (c == 1){
-            criterio = 0;
+            c -= 1;
             t = "PRECO";
         } else if (c == 2) {
-            criterio = 1;
+            c -= 1;
             t = "DISTANCIA";
         } else if (c == 3){
-            criterio = 2;
+            c -= 1;
             t = "TEMPO";
         }else{
             cout << "Criterio invalido\n";
             break;
         };
-        mostrarMatriz(europa, criterio, t);
+        mostrarMatriz(europa, c, t);
         break;
     
     case 4:
@@ -473,7 +472,7 @@ int main(int argc, char const *argv[])
         break;
 
     case 0:
-        cout << "\nEncerrando programa\n";
+        cout << "\nEncerrando programa!\n";
         break;          
     default:
         cout << "Opcao invalida!\n";
